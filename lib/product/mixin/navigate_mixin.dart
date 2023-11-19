@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 mixin NavigateMixin {
-  void navigateToWidgetReplacement(BuildContext context, Widget widget) {
+  Future<void> navigateToWidgetReplacement(BuildContext context, Widget widget) async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) {

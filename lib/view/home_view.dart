@@ -17,25 +17,23 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  bool _isLoading = false;
+  bool _isLoading = true;
   final IUsersService _service = UsersService(dio: NetworkManager.instance.service);
-  late final List<Data>? _users;
-  late final UsersSharedManager _usersSharedManager;
+  List<Data>? _users = [];
+  final SharedManager manager = SharedManager();
+  late final UsersSharedManager _usersSharedManager = UsersSharedManager(manager);
 
   @override
   void initState() {
     super.initState();
-    initalazeAndSave();
+    Future.microtask(() => initalazeAndSave());
   }
 
   Future<void> initalazeAndSave() async {
-    _changeLoading();
-    final SharedManager manager = SharedManager();
-
     await manager.init();
-    _usersSharedManager = UsersSharedManager(manager);
     _users = await _service.getUsers();
     _usersSharedManager.saveItems(_users ?? []);
+    if (!mounted) return;
     _changeLoading();
   }
 
