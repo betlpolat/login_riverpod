@@ -6,6 +6,7 @@ import 'package:login_riverpod_case_study/view/login_view.dart';
 
 void main() async {
   await ApplicationStart.init();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
