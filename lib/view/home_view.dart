@@ -5,10 +5,7 @@ import 'package:login_riverpod_case_study/model/users.dart';
 import 'package:login_riverpod_case_study/product/constants/color_constants.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/init/network_manager.dart';
-import 'package:login_riverpod_case_study/product/init/users_shared_manager.dart';
 import 'package:login_riverpod_case_study/service/users_service.dart';
-
-import '../product/init/shared_manager.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -21,8 +18,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
   bool _isLoading = true;
   final IUsersService _service = UsersService(dio: NetworkManager.instance.service);
   List<Data>? _users = [];
-  final SharedManager manager = SharedManager();
-  late final UsersSharedManager _usersSharedManager = UsersSharedManager(manager);
+  //final AppCache manager = AppCache();
+  // late final UsersSharedManager _usersSharedManager = UsersSharedManager(manager);
 
   @override
   void initState() {
@@ -31,9 +28,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   Future<void> initalazeAndSave() async {
-    await manager.init();
+    // await manager.init();
     _users = await _service.getUsers();
-    _usersSharedManager.saveItems(_users ?? []);
+    //_usersSharedManager.saveItems(_users ?? []);
     if (!mounted) return;
     _changeLoading();
   }

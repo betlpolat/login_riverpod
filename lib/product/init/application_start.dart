@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:login_riverpod_case_study/product/init/shared_manager.dart';
+import 'package:login_riverpod_case_study/product/init/cache/app_cache.dart';
 
 @immutable
 class ApplicationStart {
@@ -7,6 +7,6 @@ class ApplicationStart {
   static Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await SharedManager().init();
+    await AppCache.instance.setUp();
   }
 }
