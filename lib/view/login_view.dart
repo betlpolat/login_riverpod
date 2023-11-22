@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
-import 'package:login_riverpod_case_study/controller/token_controller.dart';
+import 'package:login_riverpod_case_study/controller/auth_notifier.dart';
 import 'package:login_riverpod_case_study/product/constants/color_constants.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/init/network_manager.dart';
