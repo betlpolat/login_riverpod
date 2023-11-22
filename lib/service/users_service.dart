@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:login_riverpod_case_study/model/users_model.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
+import 'package:login_riverpod_case_study/product/utility/exception/network_exception.dart';
 
 abstract class IUsersService {
   final Dio dio;
@@ -28,18 +29,11 @@ class UsersService extends IUsersService {
         }
       }
     } catch (e) {
-      throw NetworkError(
+      throw NetworkException(
         response.statusCode.toString(),
         response.data,
       );
     }
     return null;
   }
-}
-
-class NetworkError implements Exception {
-  final String statusCode;
-  final String message;
-
-  NetworkError(this.statusCode, this.message);
 }

@@ -27,20 +27,20 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
   final _obsureText = '*';
   bool _isSecure = true;
 
+  final authenticationNotifier = StateNotifierProvider<AuthenticationNotifier, AuthenticationState>((ref) {
+    return AuthenticationNotifier();
+  });
+
   @override
   void initState() {
-    Future.microtask(() => isValidToken());
-
     super.initState();
+    Future.microtask(() => isValidToken());
   }
 
   Future<void> isValidToken() async {
     await ref.watch(authenticationNotifier.notifier).isValidToken();
   }
 
-  final authenticationNotifier = StateNotifierProvider<AuthenticationNotifier, AuthenticationState>((ref) {
-    return AuthenticationNotifier();
-  });
   @override
   Widget build(BuildContext context) {
     final isRedirect = ref.watch(authenticationNotifier).isRedirect;

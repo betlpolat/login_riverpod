@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
 import 'package:login_riverpod_case_study/model/users_model.dart';
 import 'package:login_riverpod_case_study/product/constants/color_constants.dart';
+import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/init/network_manager.dart';
 import 'package:login_riverpod_case_study/product/init/users_shared_manager.dart';
 import 'package:login_riverpod_case_study/service/users_service.dart';
@@ -47,7 +48,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Kullanıcılar"),
+        title: const Text(StringConstants.homeTitle),
       ),
       body: _isLoading
           ? const Center(
