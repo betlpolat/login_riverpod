@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:login_riverpod_case_study/model/login_model.dart';
-import 'package:login_riverpod_case_study/model/token_model.dart';
+import 'package:login_riverpod_case_study/model/login.dart';
+import 'package:login_riverpod_case_study/model/token.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/utility/exception/network_exception.dart';
 
@@ -16,7 +16,7 @@ class LoginService extends ILoginService {
 
   @override
   Future<String?> postLogin(String email, String password) async {
-    final model = LoginModel(email: email, password: password);
+    final model = Login(email: email, password: password);
     late final Response response;
     try {
       response = await dio.post(
@@ -27,7 +27,7 @@ class LoginService extends ILoginService {
       if (response.statusCode == HttpStatus.ok) {
         final jsonBody = response.data;
         if (jsonBody is Map<String, dynamic>) {
-          final response = TokenModel.fromJson(jsonBody).token;
+          final response = Token.fromJson(jsonBody).token;
           return response;
         }
       }

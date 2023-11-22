@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:login_riverpod_case_study/model/users_model.dart';
+import 'package:login_riverpod_case_study/model/users.dart';
 import 'package:login_riverpod_case_study/product/init/shared_manager.dart';
 
 class UsersSharedManager {

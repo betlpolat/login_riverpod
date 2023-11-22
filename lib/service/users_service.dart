@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:login_riverpod_case_study/model/users_model.dart';
+import 'package:login_riverpod_case_study/model/users.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/utility/exception/network_exception.dart';
 
@@ -24,7 +24,7 @@ class UsersService extends IUsersService {
       if (response.statusCode == HttpStatus.ok) {
         final jsonBody = response.data;
         if (jsonBody is Map<String, dynamic>) {
-          final response = UsersModel.fromJson(jsonBody).data;
+          final response = Users.fromJson(jsonBody).data;
           return response;
         }
       }

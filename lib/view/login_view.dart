@@ -107,7 +107,7 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
     return ElevatedButton(
       onPressed: () async {
         if (_key.currentState!.validate()) {
-          changeLoading();
+          _changeLoading();
           final response = await _loginService.postLogin(_emailController.text, _passwordController.text);
           if (response != null) {
             await ref.read(authenticationNotifier.notifier).tokenSaveToCache(response);
@@ -150,7 +150,7 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
           borderRadius: context.border.lowBorderRadius,
         ),
         labelText: labelText,
-        suffixIcon: password ? onVisiblityIcon() : const SizedBox.shrink(),
+        suffixIcon: password ? _onVisiblityIcon() : const SizedBox.shrink(),
         enabledBorder: _borderStyle(),
         disabledBorder: _borderStyle(),
         focusedBorder: _borderStyle());
@@ -165,21 +165,21 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
     );
   }
 
-  void changeLoading() {
+  void _changeLoading() {
     setState(() {
       _isLoading = !_isLoading;
     });
   }
 
-  void changeSecure() {
+  void _changeSecure() {
     setState(() {
       _isSecure = !_isSecure;
     });
   }
 
-  IconButton onVisiblityIcon() {
+  IconButton _onVisiblityIcon() {
     return IconButton(
-      onPressed: changeSecure,
+      onPressed: _changeSecure,
       icon: AnimatedCrossFade(
           firstChild: const Icon(Icons.visibility_outlined),
           secondChild: const Icon(Icons.visibility_off_outlined),

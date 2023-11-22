@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
-import 'package:login_riverpod_case_study/model/users_model.dart';
+import 'package:login_riverpod_case_study/model/users.dart';
 import 'package:login_riverpod_case_study/product/constants/color_constants.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
 import 'package:login_riverpod_case_study/product/init/network_manager.dart';

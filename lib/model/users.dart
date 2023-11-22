@@ -1,4 +1,4 @@
-class UsersModel {
+class Users {
   int? page;
   int? perPage;
   int? total;
@@ -6,9 +6,9 @@ class UsersModel {
   List<Data>? data;
   Support? support;
 
-  UsersModel({this.page, this.perPage, this.total, this.totalPages, this.data, this.support});
+  Users({this.page, this.perPage, this.total, this.totalPages, this.data, this.support});
 
-  UsersModel.fromJson(Map<String, dynamic> json) {
+  Users.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     perPage = json['per_page'];
     total = json['total'];
