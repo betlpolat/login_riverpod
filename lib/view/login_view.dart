@@ -23,10 +23,7 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
   final ILoginService _loginService = LoginService(dio: NetworkManager.instance.service);
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
   final _obsureText = '*';
-  bool _isSecure = true;
-
   final authenticationNotifier = StateNotifierProvider<AuthenticationNotifier, AuthenticationState>((ref) {
     return AuthenticationNotifier();
   });
@@ -37,6 +34,13 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
     Future.microtask(() => isValidToken());
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Future<void> isValidToken() async {
     await ref.watch(authenticationNotifier.notifier).isValidToken();
   }
@@ -44,16 +48,17 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
   @override
   Widget build(BuildContext context) {
     final isRedirect = ref.watch(authenticationNotifier).isRedirect;
-    return isRedirect
+    final isLoading = ref.watch(authenticationNotifier).isLoading;
+    return isRedirect == false
         ? const HomeView()
         : Scaffold(
             body: Center(
               child: Stack(
                 children: [
                   Opacity(
-                    opacity: _isLoading ? 0.5 : 1,
+                    opacity: isLoading ? 0.5 : 1,
                     child: IgnorePointer(
-                      ignoring: _isLoading,
+                      ignoring: isLoading,
                       child: Form(
                           key: _key,
                           autovalidateMode: AutovalidateMode.always,
@@ -86,7 +91,7 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
                           )),
                     ),
                   ),
-                  _isLoading ? const Center(child: CircularProgressIndicator()) : const SizedBox.shrink(),
+                  isLoading ? const Center(child: CircularProgressIndicator()) : const SizedBox.shrink(),
                 ],
               ),
             ),
@@ -98,7 +103,7 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
       controller: _passwordController,
       validator: (value) => value.ext.isValidPassword ? null : StringConstants.loginPasswordValidate,
       decoration: inputDecoration(labelText: StringConstants.loginPasswordLabel, password: true),
-      obscureText: _isSecure,
+      obscureText: ref.watch(authenticationNotifier).isSecure,
       obscuringCharacter: _obsureText,
     );
   }
@@ -107,11 +112,13 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
     return ElevatedButton(
       onPressed: () async {
         if (_key.currentState!.validate()) {
-          _changeLoading();
+          ref.watch(authenticationNotifier.notifier).changeLoading();
           final response = await _loginService.postLogin(_emailController.text, _passwordController.text);
           if (response != null) {
             await ref.read(authenticationNotifier.notifier).tokenSaveToCache(response);
           }
+          ref.watch(authenticationNotifier.notifier).changeLoading();
+
           if (!mounted) return;
           await navigateToWidgetReplacement(context, const HomeView());
         }
@@ -165,25 +172,14 @@ class _LoginViewState extends ConsumerState<LoginView> with NavigateMixin {
     );
   }
 
-  void _changeLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
-
-  void _changeSecure() {
-    setState(() {
-      _isSecure = !_isSecure;
-    });
-  }
-
   IconButton _onVisiblityIcon() {
     return IconButton(
-      onPressed: _changeSecure,
+      onPressed: ref.watch(authenticationNotifier.notifier).changeSecure,
       icon: AnimatedCrossFade(
           firstChild: const Icon(Icons.visibility_outlined),
           secondChild: const Icon(Icons.visibility_off_outlined),
-          crossFadeState: _isSecure ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          crossFadeState:
+              ref.watch(authenticationNotifier).isSecure ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           duration: const Duration(seconds: 1)),
     );
   }

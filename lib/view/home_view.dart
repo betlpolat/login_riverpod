@@ -4,6 +4,7 @@ import 'package:kartal/kartal.dart';
 import 'package:login_riverpod_case_study/model/users.dart';
 import 'package:login_riverpod_case_study/product/constants/color_constants.dart';
 import 'package:login_riverpod_case_study/product/constants/string_constants.dart';
+import 'package:login_riverpod_case_study/product/init/cache/cache_keys.dart';
 import 'package:login_riverpod_case_study/product/init/network_manager.dart';
 import 'package:login_riverpod_case_study/service/users_service.dart';
 
@@ -18,8 +19,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
   bool _isLoading = true;
   final IUsersService _service = UsersService(dio: NetworkManager.instance.service);
   List<Data>? _users = [];
-  //final AppCache manager = AppCache();
-  // late final UsersSharedManager _usersSharedManager = UsersSharedManager(manager);
 
   @override
   void initState() {
@@ -28,9 +27,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   Future<void> initalazeAndSave() async {
-    // await manager.init();
     _users = await _service.getUsers();
-    //_usersSharedManager.saveItems(_users ?? []);
+    CacheKeys.users.writeListString(_users ?? []);
     if (!mounted) return;
     _changeLoading();
   }
@@ -84,11 +82,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             child: ListTile(
                               title: Text(
                                 ("${_users?[index].firstName ?? ""} ${_users?[index].lastName ?? ""}"),
-                                style: _customTextStyle(),
+                                style: _customTextStyle,
                               ),
                               subtitle: Text(
                                 _users?[index].email ?? "",
-                                style: _customTextStyle(),
+                                style: _customTextStyle,
                               ),
                             ),
                           ),
@@ -102,5 +100,5 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 
-  TextStyle _customTextStyle() => const TextStyle(color: ColorConstants.white);
+  TextStyle get _customTextStyle => const TextStyle(color: ColorConstants.white);
 }
