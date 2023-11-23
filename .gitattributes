@@ -1,4 +1,4 @@
-*.dartlinguist-detectable=true
+*.dart linguist-detectable=true
 
 *.csharp linguist-detectable=false
 
